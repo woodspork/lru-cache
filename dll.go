@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type node struct {
   data string
   prev *node
@@ -14,6 +16,56 @@ type doublyLinkedList struct {
 
 func initDLL() *doublyLinkedList {
   return &doublyLinkedList{}
+}
+
+func (d *doublyLinkedList) traverseLinkedList() {
+  currNode := d.head
+
+  for currNode != nil {
+    fmt.Println("data", currNode.data)
+    currNode = currNode.next
+  }
+
+  return
+}
+
+// removing the least recently used item in the cache
+func (d *doublyLinkedList) removeHead() {
+  head := d.head
+  if head.next == nil {
+    return
+  } else {
+    head.next.prev = nil
+    head.next = nil
+  }
+
+  return
+}
+
+func (d *doublyLinkedList) moveNodeToTail (n *node) {
+
+  if n.next == nil {
+    return
+  } else if n.prev == nil {
+    fmt.Println("here1")
+    d.head = n.next
+    n.next.prev = nil
+    n.next = nil
+    n.prev = d.tail
+    d.tail.next = n
+    d.tail = n
+  } else {
+    fmt.Println("here2")
+    n.prev.next = n.next
+    n.next.prev = n.prev
+    n.next = nil
+    n.prev = d.tail
+    d.tail.next = n
+    d.tail = n
+  }
+
+
+  return
 }
 
 func (d *doublyLinkedList) appendToHead(data string) {

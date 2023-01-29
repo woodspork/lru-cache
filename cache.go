@@ -28,9 +28,9 @@ func (c *cache) cacheAtCapacity() bool {
   return c.linkedList.len == c.capacity
 }
 
-func (c *cache) cacheHit(data string) {
-  node := c.hashMap[data]
-  c.linkedList.moveNodeToTail(node)
+func (c *cache) cacheHit(n *node) {
+  // node := c.hashMap[data
+  c.linkedList.moveNodeToTail(n)
 
   return
 }
@@ -51,14 +51,45 @@ func (c *cache) cacheMiss(data string) {
   return
 }
 
-func (c *cache) cacheAlter(data string) {
-  if c.hashMap[data] == nil {
-    c.cacheMiss(data)
+func (c *cache) set(data string) {
+  c.linkedList.appendToTail(data)
+  c.hashMap[data] = c.linkedList.tail
+
+  return
+}
+
+func (c *cache) get(data string) {
+  node := c.hashMap[data]
+  nodeExists := node != nil
+  if nodeExists == true {
+    c.cacheHit(node)
   } else {
-    fmt.Println("cacheHit")
-    c.cacheHit(data)
+    c.cacheMiss(data)
+  }
+
+
+  return
+}
+
+func (c *cache) delete(data string) {
+  node := c.hashMap[data]
+  nodeExists := node != nil
+
+  if nodeExists == false {
+    return
+  } else {
+    c.linkedList.removeNode(node)
+    c.hashMap[data] = nil
   }
 
   return
 }
+
+
+
+
+
+
+
+
 

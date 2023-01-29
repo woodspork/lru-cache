@@ -47,7 +47,6 @@ func (d *doublyLinkedList) moveNodeToTail (n *node) {
   if n.next == nil {
     return
   } else if n.prev == nil {
-    fmt.Println("here1")
     d.head = n.next
     n.next.prev = nil
     n.next = nil
@@ -55,7 +54,6 @@ func (d *doublyLinkedList) moveNodeToTail (n *node) {
     d.tail.next = n
     d.tail = n
   } else {
-    fmt.Println("here2")
     n.prev.next = n.next
     n.next.prev = n.prev
     n.next = nil
@@ -85,6 +83,28 @@ func (d *doublyLinkedList) appendToHead(data string) {
   d.len++
 
   return
+}
+
+func (d *doublyLinkedList) removeNode(n *node) {
+  if n.next == nil && n.prev == nil {
+    return
+  } else if n.next == nil {
+    n.prev.next = nil
+    d.tail = n.prev
+    n.prev = nil
+  } else if n.prev == nil {
+    n.next.prev = nil
+    d.head = n.next
+    n.next = nil
+  } else {
+    n.prev.next = n.next
+    n.next.prev = n.prev
+    n.next = nil
+    n.prev = nil
+  }
+
+  return
+
 }
 
 func (d *doublyLinkedList) appendToTail(data string) {
